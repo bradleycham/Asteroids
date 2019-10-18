@@ -53,7 +53,7 @@ public class ShipController : MonoBehaviour
     }
     void FireCanons()
     {
-        thisBullet = Instantiate(bulletPrefab, this.transform.position + CollisionHull2D.getRotatedPoint(new Vector3(0.0f, 0.3f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), theta), this.transform.rotation);
+        thisBullet = Instantiate(bulletPrefab, this.transform.position + CollisionHull2D.getRotatedPoint(new Vector3(0.0f, 0.5f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), theta), this.transform.rotation);
         Destroy(thisBullet, 3);
         thisBullet.GetComponent<BulletScript>().force = forwardVec;
         thisBullet.GetComponent<BulletScript>().startingRotation = theta;

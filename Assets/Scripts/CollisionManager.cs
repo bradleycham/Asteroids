@@ -1,22 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
+
 
 public class CollisionManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    /*
-    public class PotentialCollision
-    {
-        CollisionHull2D hull1;
-        CollisionHull2D hull2;
-        public PotentialCollision(CollisionHull2D newHull1, CollisionHull2D newHull2)
-        {
-            hull1 = newHull1;
-            hull2 = newHull2;
-        }
-    }
-    */
+    public Text score;
+    private int score_count;
+    
     //PotentialCollision potCol = new PotentialCollision(null, null);
     public List<CollisionHull2D> allColliders = new List<CollisionHull2D>();
     public List<CollisionHull2D.HullCollision> Collisions = new List<CollisionHull2D.HullCollision>();
@@ -30,13 +22,19 @@ public class CollisionManager : MonoBehaviour
     void Start()
     {
         collisionHappened = false;
+        score.text = "Points: " + score_count;
+
     }
 
-// Update is called once per frame
-void Update()
+    public void update_score()
+    {
+        score_count += 50;
+        score.text = "Points: " + score_count;
+    }
+    void Update()
     {
         respawnAsteroids = true;
-        Debug.Log(allColliders.Count);
+        //Debug.Log(allColliders.Count);
         for(int spaghetti = 0; spaghetti < allColliders.Count; spaghetti ++)
         {
             if (allColliders[spaghetti] == null)
@@ -46,7 +44,7 @@ void Update()
             }
             else if (allColliders[spaghetti].gameObject.tag == "Asteroid")
                 respawnAsteroids = false;
-            else allColliders[spaghetti].gameObject.GetComponent<Renderer>().material.color = Color.red;        
+            //else allColliders[spaghetti].gameObject.GetComponent<Renderer>().material.color = Color.red;        
             
         }
 
@@ -66,7 +64,7 @@ void Update()
                     newPosOnBorder = new Vector2(Random.Range(-Screen.width, Screen.width), Screen.height);
                 if (loc == 3)
                     newPosOnBorder = new Vector2(Random.Range(-Screen.width, Screen.width), -Screen.height);
-
+                //Debug.Log(newPosOnBorder);
                 if (type == 0)
                 {
                     Instantiate(largeCircle, newPosOnBorder, Quaternion.identity);
@@ -121,8 +119,8 @@ void Update()
                             newCollision = CollisionHull2D.AABBOBBCollision(allColliders[i].GetComponent<AABBHull>(), allColliders[j].GetComponent<OBBHull>());
                             collisionHappened = newCollision.status;
                             //Debug.Log(newCollision.contacts[0].normal);
-                            Debug.Log(newCollision.status);
-                            Debug.Log(newCollision.closingVelocity);
+                            //Debug.Log(newCollision.status);
+                            //Debug.Log(newCollision.closingVelocity);
                             //Debug.Log(newCollision.contacts[0].point);
                             //Debug.Log(newCollision.closingVelocity);
                         }
@@ -153,8 +151,8 @@ void Update()
                                 }
                             }
 
-                            allColliders[i].gameObject.GetComponent<Renderer>().material.color = Color.green;
-                            allColliders[j].gameObject.GetComponent<Renderer>().material.color = Color.green;
+                           // allColliders[i].gameObject.GetComponent<Renderer>().material.color = Color.green;
+                            //allColliders[j].gameObject.GetComponent<Renderer>().material.color = Color.green;
 
                         }
                         collisionHappened = false;
@@ -181,10 +179,15 @@ void Update()
                         Collisions[k].b.GetComponent<AsteroidScript>().Multiply();
                         Destroy(Collisions[k].a.gameObject);
                     }
+                    update_score();
                 }
             }
             if (Collisions[k].a.gameObject.tag == "Player" || Collisions[k].b.gameObject.tag == "Player")
             {
+                if(Collisions[k].a.tag == "bullet" || Collisions[k].b.tag == "bullet")
+                {
+
+                }
                 if (Collisions[k].a.gameObject.tag == "Asteroid" || Collisions[k].b.gameObject.tag == "Asteroid")
                 {
                     Destroy(Collisions[k].a.gameObject);

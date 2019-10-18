@@ -73,7 +73,7 @@ public class CollisionHull2D : MonoBehaviour
         // Positional Correction
         if (col.status)
         {
-            float percent = 0.2f;
+            float percent = 0.8f;
             float slop = 0.01f;
             Vector3 correction = Mathf.Max(velAlongNormal - slop, 0) / (invAMass + invBMass) * percent * col.contacts[0].normal;
             A.position += invAMass * correction; // started -
